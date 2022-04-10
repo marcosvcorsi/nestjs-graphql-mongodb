@@ -1,6 +1,7 @@
 import { ApolloDriver } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
+import { LessonModule } from './lesson/lesson.module';
 
 @Module({
   imports: [
@@ -8,6 +9,7 @@ import { GraphQLModule } from '@nestjs/graphql';
       autoSchemaFile: true,
       driver: ApolloDriver,
     }),
+    LessonModule,
   ],
 })
 export class AppModule {}
