@@ -25,4 +25,8 @@ export class StudentService {
 
     return this.studentRepository.save(student);
   }
+
+  async findAll() {
+    return this.studentRepository.find();
+  }
 }
