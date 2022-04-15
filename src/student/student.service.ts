@@ -29,4 +29,12 @@ export class StudentService {
   async findAll() {
     return this.studentRepository.find();
   }
+
+  async findById(id: string) {
+    return this.studentRepository.findOne({
+      where: {
+        id,
+      },
+    });
+  }
 }
