@@ -33,4 +33,8 @@ export class LessonService {
       where: { id },
     });
   }
+
+  async findAll() {
+    return this.lessonRepository.find();
+  }
 }
