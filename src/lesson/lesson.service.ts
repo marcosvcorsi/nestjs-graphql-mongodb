@@ -8,6 +8,12 @@ type CreateLessonParams = {
   name: string;
   startDate: Date;
   endDate: Date;
+  studentsIds: string[];
+};
+
+type AssignStudentsToLesson = {
+  lessonId: string;
+  studentIds: string[];
 };
 
 @Injectable()
@@ -17,12 +23,13 @@ export class LessonService {
     private readonly lessonRepository: Repository<Lesson>,
   ) {}
 
-  async create({ name, startDate, endDate }: CreateLessonParams) {
+  async create({ name, startDate, endDate, studentsIds }: CreateLessonParams) {
     const lesson = this.lessonRepository.create({
       id: uuid(),
       name,
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
+      studentsIds,
     });
 
     return this.lessonRepository.save(lesson);
@@ -36,5 +43,22 @@ export class LessonService {
 
   async findAll() {
     return this.lessonRepository.find();
+  }
+
+  async assignStudentsToLesson({
+    lessonId,
+    studentIds,
+  }: AssignStudentsToLesson) {
+    const lesson = await this.lessonRepository.findOne({
+      where: { id: lessonId },
+    });
+
+    if (!lesson) {
+      throw new Error('Lesson not found');
+    }
+
+    lesson.studentsIds = [...(lesson.studentsIds ?? []), ...studentIds];
+
+    return this.lessonRepository.save(lesson);
   }
 }
